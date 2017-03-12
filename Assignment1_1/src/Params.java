@@ -18,13 +18,13 @@ public class Params {
 	public final static int BELT_MOVE_TIME = 900;
 	
 	// the amount of time it takes the robot to move a bicycle
-	public final static int ROBOT_MOVE_TIME = 900;
+	public final static int ROBOT_MOVE_TIME = 9000;
 	
 	// the amount of time it takes to inspect a bicycle
 	public final static int INSPECT_TIME = 5000;
 		
 	// probability that a bicycle is tagged
-	public final static double TAG_PROB = 0.1;
+	public final static double TAG_PROB = 0.9;
 	
 	// probability that a tagged bicycle is defective
 	public final static double DEFECT_PROB = 0.7;

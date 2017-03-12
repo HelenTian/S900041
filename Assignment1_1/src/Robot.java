@@ -1,3 +1,5 @@
+import java.util.concurrent.Semaphore;
+
 /*
  * A robot moves the bicycle between
  *  the belt and inspector
@@ -5,6 +7,42 @@
  */
 
  
-public class Robot {
+public class Robot extends BicycleHandlingThread {
+	
+	private volatile Boolean isBusy = false;
+	
+	public synchronized void moveToInspector(){
+		isBusy = true;	
+		try {
+			System.out.println("Robot is doing moveToInspector....Strart sleeping...");
+			Thread.sleep(Params.ROBOT_MOVE_TIME);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		isBusy = false;
+		System.out.println("Robot finishes moveToInspector....");
+		notifyAll();
+	}
+	
+	public synchronized void moveToBelt(){
+		
+		
+	}
+	
+	public synchronized Boolean isBusy(){
+		return isBusy;	
+	}
+	
+	public void run(){
+		
+		 while (!isInterrupted()) {
+	         
+	      }
 
+	        System.out.println("BeltMover terminated");
+	}
+	
+	
 }
