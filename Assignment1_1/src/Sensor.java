@@ -44,6 +44,7 @@ public class Sensor extends BicycleHandlingThread {
                     	// If Robot is not available, wait
                 		System.out.println("Bicycle "+ bicycle.id+ " is tagged!");
                 		
+                		// 因为robot还在sleep不会响应
                 		while(robot.isBusy()){
                 			System.out.println("Robot is busy...Waiting..");
                 			belt.wait();
@@ -51,7 +52,7 @@ public class Sensor extends BicycleHandlingThread {
                 		}
                 		
                 		System.out.println("Robot starts to move this bicycle "+ bicycle.id + " to inspector");
-                		robot.moveToInspector();
+                		robot.notifyMove();
                 		beingInspexted = bicycle;
     				} else {
     					// The bicycle is not tagged 

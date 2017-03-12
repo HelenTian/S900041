@@ -1,3 +1,4 @@
+import java.awt.print.Printable;
 import java.util.concurrent.Semaphore;
 
 /*
@@ -8,11 +9,10 @@ import java.util.concurrent.Semaphore;
 
  
 public class Robot extends BicycleHandlingThread {
-	
 	private volatile Boolean isBusy = false;
 	
 	public synchronized void moveToInspector(){
-		isBusy = true;	
+//		isBusy = true;	
 		try {
 			System.out.println("Robot is doing moveToInspector....Strart sleeping...");
 			Thread.sleep(Params.ROBOT_MOVE_TIME);
@@ -35,14 +35,25 @@ public class Robot extends BicycleHandlingThread {
 		return isBusy;	
 	}
 	
+	public synchronized void notifyMove(){
+		isBusy = true;
+	}
+	
+	
 	public void run(){
 		
 		 while (!isInterrupted()) {
-	         
+			
+	         if(isBusy) {
+	        	 moveToInspector(); 
+	        	 System.out.println("我挪完一次了。。。");
+	         }
+	        
 	      }
 
-	        System.out.println("BeltMover terminated");
+	        System.out.println("Robot terminated");
 	}
 	
 	
 }
+
