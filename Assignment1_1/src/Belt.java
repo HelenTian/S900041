@@ -6,12 +6,22 @@ public class Belt {
     // the items in the belt segments
     protected Bicycle[] segment;
 
+    //the sensor on this belt
+    protected Sensor sensor; 
+    
     // the length of this belt
     protected int beltLength = 5;
 
     // to help format output trace
     final private static String indentation = "                  ";
 
+    /*
+     * Set sensor 
+     */
+    public void setSensor(Sensor sensor){
+    	this.sensor = sensor;
+    	
+    }
     /**
      * Create a new, empty belt, initialised as empty
      */
@@ -48,6 +58,20 @@ public class Belt {
 
         // notify any waiting threads that the belt has changed
         notifyAll();
+    }
+    /*
+     * Take a bicycle off the index position
+     * @return the removed bicycle
+     * @throws InterruptedException
+     *             if the thread executing is interrupted
+     */
+    public synchronized Bicycle get(int index) throws InterruptedException{
+    	Bicycle bicycle;
+    	bicycle = segment[index];
+    	segment[index] = null;
+    	notifyAll();
+    	return bicycle;
+    	
     }
 
     /**
@@ -91,7 +115,7 @@ public class Belt {
             throws InterruptedException, OverloadException {
         // if there is something at the end of the belt, 
     	// or the belt is empty, do not move the belt
-        while (isEmpty() || segment[segment.length-1] != null) {
+        while (isEmpty() || segment[segment.length-1] != null || sensor.returnTag()) {
             wait();
         }
 
@@ -163,4 +187,6 @@ public class Belt {
     public int getEndPos() {
         return beltLength-1;
     }
+    
+   
 }

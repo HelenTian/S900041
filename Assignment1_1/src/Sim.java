@@ -12,14 +12,18 @@ public class Sim {
         Producer producer = new Producer(belt);
         Consumer consumer = new Consumer(belt);
         BeltMover mover = new BeltMover(belt);
-        Robot robot = new Robot();
-        Sensor sensor = new Sensor(belt, robot);
+        Inspector inspector = new Inspector();
+        Sensor sensor = new Sensor(belt);
+        Robot robot = new Robot(belt, sensor, inspector);
+        belt.setSensor(sensor);
+        
         
         consumer.start();
         producer.start();
         mover.start();
         robot.start();
         sensor.start();
+        inspector.start();
 
         while (consumer.isAlive() && 
                producer.isAlive() && 

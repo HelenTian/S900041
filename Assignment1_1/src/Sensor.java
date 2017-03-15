@@ -9,66 +9,62 @@ public class Sensor extends BicycleHandlingThread {
 
     // the belt on which the sensor is placed
     protected Belt belt;
-    protected Robot robot;
     private int position = 2;
+    private Boolean findTag = false;
     private Bicycle lastChecked;
-    private Bicycle beingInspexted;
+    private Bicycle lastInspected;
+    // to help format output trace
+    final private static String indentation = "-------";
     
     /**
      * Create a new sensor to detect a given belt
      */
-	public Sensor (Belt belt, Robot robot){
+	public Sensor (Belt belt){
 		super();
 		this.belt = belt;
-		this.robot = robot;
 		lastChecked = null;
-		beingInspexted = null;
 	}
 	
+	public Boolean returnTag(){
+		return findTag;
+	}
 
+	public void setNotTagged(){
+		findTag = false;
+	}
+	
+	public void updateInspected(Bicycle bicycle){
+		this.lastInspected = bicycle;
+	}
     /**
      * Identify the bicycle
      */
     public void run() {
         while (!isInterrupted()) {
-            try {
             	/**Check the bicycle
             	 *Only check when 
             	 *the bicycle has not been checked 
             	 *and is not being inspected
             	*/
                 Bicycle bicycle = belt.peek(position);
-                if(bicycle!= null && bicycle!= lastChecked && bicycle != beingInspexted){
+                if(bicycle!= null && bicycle!= lastChecked && bicycle != lastInspected){
                 	if (bicycle.isTagged()) {
     					// Call Robot to move the bicycle
-                    	// If Robot is not available, wait
-                		System.out.println("Bicycle "+ bicycle.id+ " is tagged!");
+                		System.out.println(indentation + 
+                				bicycle.toString() + 
+                				" is tagged "+ indentation);
+                		System.out.println(indentation + 
+                				bicycle.toString() + 
+                				" is waiting for robot " +indentation);
+                		findTag = true;
+                		     		
                 		
-                		// 因为robot还在sleep不会响应
-                		while(robot.isBusy()){
-                			System.out.println("Robot is busy...Waiting..");
-                			belt.wait();
-                			wait();
-                		}
-                		
-                		System.out.println("Robot starts to move this bicycle "+ bicycle.id + " to inspector");
-                		robot.notifyMove();
-                		beingInspexted = bicycle;
-    				} else {
-    					// The bicycle is not tagged 
-    					lastChecked = bicycle;
-    				}
+    				} 
+                	lastChecked = bicycle;
                 }
-
-                
-                
-            
-            } catch (InterruptedException e) {
-                this.interrupt();
-            }
         }
 
-        System.out.println("BeltMover terminated");
+        System.out.println("Sensor terminated");
     }
     
   
