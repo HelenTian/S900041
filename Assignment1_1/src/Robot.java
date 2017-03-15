@@ -37,12 +37,12 @@ public class Robot extends BicycleHandlingThread {
 				sensor.setNotTagged();
 				sensor.updateInspected(bicycle);
 				System.out.println(indentation+ 
-						"Robot is moving the bicycle to inspector."
+						"Robot is moving " + bicycle.toString() + " to inspector."
 						+ indentation);
 				Thread.sleep(Params.ROBOT_MOVE_TIME);
 
 				System.out.println(indentation+
-						"Robot wakes up, call the inspector to start inspection"
+						"Robot finishes moving. Inspector will start inspection"
 						+ indentation);
 				bicycle = inspector.doInspect(bicycle);
 				moveToBelt(bicycle);

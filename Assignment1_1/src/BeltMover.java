@@ -22,14 +22,12 @@ public class BeltMover extends BicycleHandlingThread {
 	 */
 	public void run() {
 		while (!isInterrupted()) {
-			try {
-			
+			try {	
 					// spend BELT_MOVE_TIME milliseconds moving the belt
 					Thread.sleep(Params.BELT_MOVE_TIME);
 		
 					belt.move();
-				
-				
+
 			} catch (OverloadException e) {
 				terminate(e);
 			} catch (InterruptedException e) {
