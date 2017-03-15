@@ -52,10 +52,7 @@ public class Sensor extends BicycleHandlingThread {
     					// Call Robot to move the bicycle
                 		System.out.println(indentation + 
                 				bicycle.toString() + 
-                				" is tagged "+ indentation);
-                		System.out.println(indentation + 
-                				bicycle.toString() + 
-                				" is waiting for robot " +indentation);
+                				" is tagged and waiting for robot " +indentation);
                 		findTag = true;
                 		     		
                 		

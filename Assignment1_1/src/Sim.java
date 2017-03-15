@@ -27,7 +27,10 @@ public class Sim {
 
         while (consumer.isAlive() && 
                producer.isAlive() && 
-               mover.isAlive() )
+               mover.isAlive() &&
+               robot.isAlive() &&
+               sensor.isAlive() &&
+               inspector.isAlive())
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -38,6 +41,9 @@ public class Sim {
         consumer.interrupt();
         producer.interrupt();
         mover.interrupt();
+        robot.interrupt();
+        sensor.interrupt();
+        inspector.interrupt();
 
         System.out.println("Sim terminating");
         System.out.println(BicycleHandlingThread.getTerminateException());

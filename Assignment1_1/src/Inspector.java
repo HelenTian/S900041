@@ -1,3 +1,5 @@
+import java.util.Random;
+
 
 /*
  * The inspector inspect the tagged bicycle,
@@ -46,6 +48,11 @@ public class Inspector extends BicycleHandlingThread{
 				+ indentation);
 		return bicycle;	
 	}
+	
+	public void run() {
+        while (!isInterrupted());
+        System.out.println("Inspector terminated");
+    }
 	
 	
 }
