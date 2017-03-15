@@ -49,13 +49,16 @@ public class Belt {
         while (segment[index] != null) {
             wait();
         }
-
+        
         // insert the element at the specified location
         segment[index] = bicycle;
 
         // make a note of the event in output trace
-        System.out.println(bicycle + " arrived");
-
+        if(index == 0){
+        	System.out.println(bicycle + " arrived");
+        }else{
+        	System.out.println(bicycle + " is returned");
+        }
         // notify any waiting threads that the belt has changed
         notifyAll();
     }
