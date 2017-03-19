@@ -12,6 +12,9 @@ public class Bicycle {
     // specifies whether the bicycle is defective
     protected boolean defective = false;
 
+    // specifies whether the bicycle is inspected
+    protected  boolean inspected = false;
+    
     // the ID of this bicycle
     protected int id;
 
@@ -72,6 +75,20 @@ public class Bicycle {
     }
     
     /**
+     * @return true if and only if this bicycle is marked as inspected
+     */
+    public boolean isInspected() {
+        return inspected;
+    }
+
+    /**
+     * Mark this bicycle as inspected
+     */
+    public void setInspected() {
+    	inspected = true;
+    }
+    
+    /**
      * @return true if and only if this bicycle is marked as defective
      */
     public boolean isDefective() {
@@ -81,6 +98,7 @@ public class Bicycle {
     public String toString() {
     	String tFlag = tagged ? "t" : "-";
     	String dFlag = defective ? "d" : "-";
-        return "B:" + String.format("%03d", id) + "(" + tFlag + dFlag + ")";
+    	String iFlag = inspected ? "i" : "-";
+        return "B:" + String.format("%03d", id) + "(" + tFlag + dFlag + iFlag + ")";
     }
 }

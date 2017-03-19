@@ -15,23 +15,30 @@ public class Belt {
     // to help format output trace
     final private static String indentation = "                  ";
 
-    /*
-     * Set sensor 
-     */
-    public void setSensor(Sensor sensor){
-    	this.sensor = sensor;
-    	
-    }
     /**
      * Create a new, empty belt, initialised as empty
+     * the sensor on the belt initialised as empty
      */
     public Belt() {
         segment = new Bicycle[beltLength];
         for (int i = 0; i < segment.length; i++) {
             segment[i] = null;
         }
+        this.sensor = null;
     }
 
+    /*
+     * Set sensor on this belt
+     * 
+     * @param sensor
+     * 			the sensor to detect bicycles on the belt
+     * 
+     */
+    public void setSensor(Sensor sensor){
+    	this.sensor = sensor;
+    	
+    }
+    
     /**
      * Put a bicycle on the belt.
      * 
@@ -56,20 +63,24 @@ public class Belt {
         // make a note of the event in output trace
         if(index == 0){
         	System.out.println(bicycle + " arrived");
-        }else{
-        	System.out.println(bicycle + " is returned");
         }
         // notify any waiting threads that the belt has changed
         notifyAll();
     }
     /*
      * Take a bicycle off the index position
+     * @param index
+     * 			the index of segment
      * @return the removed bicycle
      * @throws InterruptedException
      *             if the thread executing is interrupted
      */
     public synchronized Bicycle get(int index) throws InterruptedException{
     	Bicycle bicycle;
+        // while there is no bicycle at this index, block this thread
+        while (segment[index] == null) {
+            wait();
+        }
     	bicycle = segment[index];
     	segment[index] = null;
     	notifyAll();
@@ -98,8 +109,8 @@ public class Belt {
         segment[segment.length-1] = null;
 
         // make a note of the event in output trace
-        System.out.print(indentation + indentation);
-        System.out.println(bicycle + " departed");
+        System.out.println(indentation + indentation
+        		+ bicycle + " departed");
 
         // notify any waiting threads that the belt has changed
         notifyAll();
@@ -117,7 +128,9 @@ public class Belt {
     public synchronized void move() 
             throws InterruptedException, OverloadException {
         // if there is something at the end of the belt, 
-    	// or the belt is empty, do not move the belt
+    	// or the belt is empty, 
+    	// or the sensor detect a tagged sensor which is not removed,
+    	// do not move the belt
         while (isEmpty() || segment[segment.length-1] != null || sensor.returnTag()) {
             wait();
         }

@@ -8,13 +8,16 @@ public class Consumer extends BicycleHandlingThread {
 
     // the belt from which the consumer takes the bicycles
     protected Belt belt;
-
+    // the bicycle get from the end of belt
+    private Bicycle bicycle;
+    
     /**
      * Create a new Consumer that consumes from a belt
      */
     public Consumer(Belt belt) {
         super();
         this.belt = belt;
+        bicycle = null;
     }
 
     /**
@@ -23,7 +26,11 @@ public class Consumer extends BicycleHandlingThread {
     public void run() {
         while (!isInterrupted()) {
             try {
-                belt.getEndBelt();
+                bicycle = belt.getEndBelt();
+                if(bicycle.tagged && !bicycle.inspected){
+                	DefException e = new DefException(bicycle.toString() + "is not inspected");
+                	terminate(e);
+                }
 
                 // let some time pass ...
                 Random random = new Random();
